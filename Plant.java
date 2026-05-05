@@ -33,9 +33,32 @@ public class Plant {
 		this.setAll(original.name, original.tempFahrenheit, original.uses);
 	}
 
-	//TODO: Step 1 = CSV string constructor
+	//Step 1 = CSV string constructor
+	public Plant (String csv) {
+		if (csv == null || csv.length() == 0) {
+			throw new IllegalArgumentException("No CSV string given to constructor");
+		}
+		// code to run if no exception thrown and CSV
+		String[] parts = csv.split(","); //should have 3 parts
 
+		if (parts.length != 3 ) { //ensures 3 parts are present
+			throw new IllegalArgumentException("CSV string does not have required number of values. \nCSV string = " + csv);
+		}
+		String name = parts[0]; //part 1
+		double temp;
+		try {
+			temp = Double.parseDouble(parts[1]); //part 2
+		} catch (NumberFormatException nfe) {
+			throw new IllegalArgumentException("CSV string does not have valid temp (double) as second value in CSV string." +
+					"\nSecond value = " + parts[1]);
+		}
+		String uses = parts[2]; //part 3
 
+		if(!this.setAll(name, temp, uses)) {
+			throw new IllegalArgumentException("Invalid Data provided afrter parsing. \nName = " + name + "\nTemp = " +
+					temp + "\nUses = " + uses);
+		}
+	}
 
 
 	// MUTATORS/SETTERS
@@ -119,6 +142,6 @@ public class Plant {
 	public String toString() {
 		return "name: " + this.name + "\n" +
 			"temp: " + this.tempFahrenheit + "°F\n" +
-			"uses: " + this.uses;
+			"uses: " + this.uses + "\n";
 	}
 }
